@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="System.Dictionary"></Asset>
+  <Destructable>
+    <Name Type ="System.String">ship1</Name>
+    <Health>50</Health>
+    <Damage>3</Damage>
+    <Speed>3</Speed>
+  </Destructable>
+  <Destructable>
+    <Name Type ="System.String">ship2</Name>
+    <Health>100</Health>
+    <Damage>7</Damage>
+    <Speed>2</Speed>
+  </Destructable>
+  <Destructable>
+    <Name Type ="System.String">ship3</Name>
+    <Health>200</Health>
+    <Damage>10</Damage>
+    <Speed>1</Speed>
+  </Destructable>
+  <Destructable>
+    <Name Type ="System.String">turret</Name>
+    <Health>150</Health>
+    <Damage>5</Damage>
+    <Speed>0</Speed>
+  </Destructable>
+</XnaContent>
