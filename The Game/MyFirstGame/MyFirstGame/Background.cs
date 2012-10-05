@@ -7,6 +7,7 @@ namespace SpaceShoot
 {
     class Background
     {
+        private int nouse;
         private Texture2D mytexture; 
         private Random r;
         private int maxY;
