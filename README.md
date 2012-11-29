@@ -43,6 +43,9 @@ Planned features should be listed below, seperated by relative implementation le
 
 ## Further Ideas
 
+Weapons aren't pre-set, but customizable? Complex weapon customization?
+AI controlled teammates rather than ones that just hang on wings?
+
 MULTIPLAYER!!?
 
 Pre-fab and procedurally generated waves of enemies

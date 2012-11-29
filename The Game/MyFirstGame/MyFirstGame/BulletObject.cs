@@ -6,32 +6,33 @@ namespace SpaceShoot
 {
     class BulletObject : Entity
     {
-        Vector2 bulletSpeed;
+        Vector2 velocity;
         int damage = 25; // temporary
-        Texture2D Texture;
-        static Boolean alternate = true;
+        Texture2D texture;
+        bool friendly;
 
-        public BulletObject(Texture2D texture1, Texture2D texture2, Vector2 spritePosition, Vector2 shipSpeed, float velocity, Random r)
+        public BulletObject(Texture2D texture, Vector2 position, Vector2 velocity, bool friendly)
         {
-            if (alternate)
-                Texture = texture1;
-            else
-                Texture = texture2;
-            alternate = !alternate;
-
-            Position = spritePosition;
-            Position = new Vector2(Position.X + r.Next(4,12), Position.Y - 10);
-            bulletSpeed = new Vector2(shipSpeed.X / 2 + r.Next(1), -velocity); // The /2 on the ship speed doesn't actually make sense in terms of physics, but it looks good!
+            this.texture = texture;
+            this.friendly = friendly;
+            Position = position;
+            this.velocity = velocity; 
         }
 
+        public bool isFriendly()
+        {
+            return friendly;
+        }
+
+        // delta?
         new public void Update()
         {
-            Position = Position + bulletSpeed;
+            Position = Position + velocity;
         }
 
         new public void Draw(SpriteBatch batch)
         {
-            batch.Draw(Texture, Position, Color.White);
+            batch.Draw(texture, Position, Color.White);
         }
 
         internal int GetDamage()

@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using System;
 
 namespace SpaceShoot
 {
-    class PlayerShip : Entity
+    class PlayerShip : Ship
     {
         private bool Active { get; set; }
         AnimatedSprite ShipAnimation;
@@ -20,23 +22,21 @@ namespace SpaceShoot
         private ParticleEngine EngineAnimation;
         public BoundingSphere Bounds { get; set; }
 
-        public PlayerShip()
+        public PlayerShip(Vector2 pos, int Health, Vector2 MaxSpeed, List<WeaponObject> weapons, float attraction, float grabRadius)
         {
+            centerOffset = 5;
+            friendly = true;
             Bounds = new BoundingSphere(new Vector3(Position, 0), 10);
             Bank = bank.none;
             atEdge = false;
-        }
-
-        public PlayerShip(Vector2 pos, int Health, Vector2 MaxSpeed, float attraction, float grabRadius)
-            : this()
-        {
+            this.weapons = weapons;
             Position = pos;
             this.Health = Health;
             this.MaxSpeed = new Vector2(MaxSpeed.X, -MaxSpeed.Y);
             CurSpeed = new Vector2(0, 0); 
             this.Attraction = attraction;
             this.GrabRadius = grabRadius;
-            }
+        }
 
         public void Initialize(Vector2 windowSize, AnimatedSprite shipAnimation, ParticleEngine engineAnimation)
         {
@@ -46,16 +46,36 @@ namespace SpaceShoot
             Active = true;
         }
 
+        public void fire(Queue<BulletObject> Bullets, Texture2D[] BulletTextures, Random r)
+        {
+            foreach (WeaponObject curWep in weapons)
+            {
+                if (curWep.isReady())
+                {
+                    Vector2 ShipSpeed = CurSpeed;
+                    Vector2 WeaponPosition = new Vector2(Position.X + 10, Position.Y);
+                    WeaponPosition = new Vector2(WeaponPosition.X, WeaponPosition.Y - 10); // 10 is arb, based on texture
+                    curWep.fire(Bullets, BulletTextures, WeaponPosition, CurSpeed, true, r);
+                }
+            }
+        }
+
         public void Update(GameTime gameTime)
         {
             if (!Active)
                 return;
-            atEdge = false;
-            if (Position.X == WindowSize.X || Position.X == 0) { atEdge = true; }
+            if (Position.X == WindowSize.X || Position.X == 0) { CurSpeed = new Vector2(0,CurSpeed.Y); }
             Position = Position + CurSpeed;
+
+            double delta = gameTime.ElapsedGameTime.Milliseconds;
+            foreach (WeaponObject curWep in weapons)
+            {
+                curWep.updateCooldown(delta);
+            }
 
             updateEngineAnimation();
 
+            // making sure ship isn't out of window
             if (Position.X > WindowSize.X - 30) { Position = new Vector2(WindowSize.X - 30, Position.Y); }
             else if (Position.X < 0) { Position = new Vector2(0, Position.Y); }
             if (Position.Y > WindowSize.Y - 20) { Position = new Vector2(Position.X, WindowSize.Y - 20); }
@@ -85,7 +105,7 @@ namespace SpaceShoot
 
         internal void LeftThrust()
         {
-            Bank = bank.left;
+            Bank = bank.left; // for texture animation
             CurSpeed = new Vector2(-MaxSpeed.X, CurSpeed.Y);
         }
 
