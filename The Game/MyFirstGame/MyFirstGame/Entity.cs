@@ -8,30 +8,18 @@ namespace SpaceShoot
     {
         public Vector2 Position { get; set; }
 
-        public Entity()
-        {
-
-        }
+        public Entity(){}
 
         public Entity(Vector2 spritePosition)
         {
             Position = spritePosition;
         }
 
-        public void Initialize()
-        {
+        public void Initialize(){}
 
-        }
+        public void Update(){}
 
-        public void Update()
-        {
-
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-        
-        }
+        public void Draw(SpriteBatch spriteBatch){}
 
         internal bool ProcessUpdate(float gameSpeed)
         {

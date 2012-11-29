@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SpaceShoot
 {
-    class ScrollingBackground
+    class NIU_ScrollingBackground
     {
         private Vector2 screenpos, origin, texturesize;
         private Texture2D mytexture;

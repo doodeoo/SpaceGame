@@ -38,7 +38,7 @@ Planned features should be listed below, seperated by relative implementation le
 
 #### High
 - Determine the theme - (Abstract/Space/Realistic/Whatever)
-- Make this game something korean kids can masterbate over and american kids can still enjoy
+- Make this game something korean kids can obsess over and american kids can still enjoy
 
 
 ## Further Ideas

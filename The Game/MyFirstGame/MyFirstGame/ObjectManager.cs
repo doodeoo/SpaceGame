@@ -19,10 +19,10 @@ namespace SpaceShoot
         public void DrawAll(SpriteBatch spriteBatch)
         {
             int length = Objects.Count;
-            Debug.WriteLine("--------------");
+            //Debug.WriteLine("--------------");
             for (int i = 0; i < length; i++)
             {
-                Debug.WriteLine(i);
+                //Debug.WriteLine(i);
                 Entity cur = Objects.Dequeue();
                 if (true) //cur.ProcessUpdate())
                 {

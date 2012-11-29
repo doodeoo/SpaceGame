@@ -29,25 +29,27 @@ namespace SpaceShoot
         public void Update(float deltaY)
         {
             ScrollStars(deltaY);
-            GenerateStars(r.Next(2));
+            GenerateStars(r.Next(2), deltaY);
         }
 
         private void GenerateInitial()
         {
-            while (bgStars.Count < 240) // Experimentally determined value for the number of bgStars onscreen before they fill it
+            while (bgStars.Count < 350) // Experimentally determined value for the number of bgStars onscreen before they fill it
             {
                 ScrollStars(2);
-                GenerateStars(r.Next(2));
+                GenerateStars(r.Next(2), 2);
             }
         }
 
-        private void GenerateStars(int num)
+        private void GenerateStars(int num, float deltaY)
         {
             for (int i = 0; i < num; i++)
             {
                 stars.Enqueue(new Vector2(r.Next(maxX), 0));
-                if (num < 2)
+                if ((int)(deltaY / (1.5f)) != 0)
+                {
                     bgStars.Enqueue(new Vector2(r.Next(maxX), 0));
+                }
             }
         }
 
