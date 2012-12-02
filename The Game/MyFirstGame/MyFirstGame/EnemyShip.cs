@@ -1,26 +1,27 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace SpaceShoot
 {
-    class DestructibleObject : Entity
+    class EnemyShip : Ship
     {
         bool hit;
-        int cooldown;
-        int Health, FireDamage, FireSpeed; // Make a new class called FiringPattern to define the pattern of fire maybe?
-        Vector2 MoveSpeed;
+        int Health; 
+        // Make a new class called FiringPattern to define the pattern of fire maybe?
         BoundingSphere hitSphere;
         private EnemyParticleEngine DestPartEngine;
 
-        public DestructibleObject(Vector2 pos, int health, int fireDamage, int fireSpeed, Vector2 moveSpeed)
+        public EnemyShip(Vector2 pos, int health, List<WeaponObject> weapons, Vector2 speed)
         {
-            cooldown = fireSpeed;
+            this.weapons = weapons;
             hit = false;
             Position = pos;
             Health = health;
-            FireDamage = fireDamage;
-            FireSpeed = fireSpeed;
-            MoveSpeed = moveSpeed;
+            this.CurSpeed = speed;
             Vector3 center = new Vector3(Position, 0);
             hitSphere = new BoundingSphere(center, 30);
         }
@@ -35,12 +36,15 @@ namespace SpaceShoot
             DestPartEngine = destPartEngine;
         }
 
-        internal void Update(float gameSpeed)
+        internal void Update(GameTime gameTime)
         {
-            if (cooldown > 0)
-                cooldown--;
+            double delta = gameTime.ElapsedGameTime.Milliseconds;
+            foreach (WeaponObject curWep in weapons)
+            {
+                curWep.updateCooldown(delta);
+            }
             hit = false;
-            Position += MoveSpeed * gameSpeed;
+            Position += CurSpeed;
             hitSphere.Center = new Vector3(Position, 0);
 
             DestPartEngine.EmitterLocation = new Vector2(Position.X + 20, Position.Y);
@@ -58,21 +62,10 @@ namespace SpaceShoot
                 spriteBatch.Draw(texture, Position, Color.White);
         }
 
-        public bool canFire()
-        {
-            return (cooldown == 0);
-        }
-
-        public void Fire()
-        {
-            cooldown = FireSpeed;
-        }
-
         internal bool Intersects(BoundingSphere other)
         {
             return hitSphere.Intersects(other);
         }
-
 
         internal BoundingSphere getHitSphere()
         {
@@ -96,9 +89,3 @@ namespace SpaceShoot
         }
     }
 }
-
-/*
-
- * Sort the different types of enemies
-
-*/

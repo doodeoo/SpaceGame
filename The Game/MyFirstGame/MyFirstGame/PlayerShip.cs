@@ -13,7 +13,6 @@ namespace SpaceShoot
         public bool atEdge { get; set; } // Kind of a hack :P
         public Vector2 WindowSize { get; set; }
         public Vector2 MaxSpeed { get; set; }
-        public Vector2 CurSpeed { get; set; }
         public int Health { get; set; }
         public float Attraction { get; set; }
         public float GrabRadius { get; set; }
@@ -44,20 +43,6 @@ namespace SpaceShoot
             ShipAnimation = shipAnimation;
             EngineAnimation = engineAnimation;
             Active = true;
-        }
-
-        public void fire(Queue<BulletObject> Bullets, Texture2D[] BulletTextures, Random r)
-        {
-            foreach (WeaponObject curWep in weapons)
-            {
-                if (curWep.isReady())
-                {
-                    Vector2 ShipSpeed = CurSpeed;
-                    Vector2 WeaponPosition = new Vector2(Position.X + 10, Position.Y);
-                    WeaponPosition = new Vector2(WeaponPosition.X, WeaponPosition.Y - 10); // 10 is arb, based on texture
-                    curWep.fire(Bullets, BulletTextures, WeaponPosition, CurSpeed, true, r);
-                }
-            }
         }
 
         public void Update(GameTime gameTime)
@@ -96,6 +81,19 @@ namespace SpaceShoot
             ShipAnimation.DrawFrame(spriteBatch, Position, (int)Bank);
             EngineAnimation.Draw(spriteBatch);
             resetBank();
+        }
+
+        new public void fire(Queue<BulletObject> Bullets, Texture2D[] BulletTextures, Random r)
+        {
+            foreach (WeaponObject curWep in weapons)
+            {
+                if (curWep.isReady())
+                {
+                    Vector2 WeaponPosition = new Vector2(Position.X + 10, Position.Y);
+                    WeaponPosition = new Vector2(WeaponPosition.X, WeaponPosition.Y - 10); // 10 is arb, based on texture
+                    curWep.fire(Bullets, BulletTextures, WeaponPosition, CurSpeed, friendly, r);
+                }
+            }
         }
 
         internal void ZeroThrust()
