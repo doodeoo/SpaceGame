@@ -36,9 +36,8 @@ namespace SpaceShoot
             DestPartEngine = destPartEngine;
         }
 
-        internal void Update(GameTime gameTime)
+        internal void Update(double delta)
         {
-            double delta = gameTime.ElapsedGameTime.Milliseconds;
             foreach (WeaponObject curWep in weapons)
             {
                 curWep.updateCooldown(delta);

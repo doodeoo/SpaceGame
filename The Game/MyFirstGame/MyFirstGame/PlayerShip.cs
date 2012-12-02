@@ -19,6 +19,7 @@ namespace SpaceShoot
         public enum bank { none, left, right}
         public bank Bank;
         private ParticleEngine EngineAnimation;
+        public bool firing { get; set; }
         public BoundingSphere Bounds { get; set; }
 
         public PlayerShip(Vector2 pos, int Health, Vector2 MaxSpeed, List<WeaponObject> weapons, float attraction, float grabRadius)
@@ -35,6 +36,7 @@ namespace SpaceShoot
             CurSpeed = new Vector2(0, 0); 
             this.Attraction = attraction;
             this.GrabRadius = grabRadius;
+            firing = false;
         }
 
         public void Initialize(Vector2 windowSize, AnimatedSprite shipAnimation, ParticleEngine engineAnimation)
@@ -49,7 +51,7 @@ namespace SpaceShoot
         {
             if (!Active)
                 return;
-            if (Position.X == WindowSize.X || Position.X == 0) { CurSpeed = new Vector2(0,CurSpeed.Y); }
+
             Position = Position + CurSpeed;
 
             double delta = gameTime.ElapsedGameTime.Milliseconds;
@@ -94,6 +96,8 @@ namespace SpaceShoot
                     curWep.fire(Bullets, BulletTextures, WeaponPosition, CurSpeed, friendly, r);
                 }
             }
+            
+            firing = false;
         }
 
         internal void ZeroThrust()
@@ -103,14 +107,21 @@ namespace SpaceShoot
 
         internal void LeftThrust()
         {
-            Bank = bank.left; // for texture animation
-            CurSpeed = new Vector2(-MaxSpeed.X, CurSpeed.Y);
+            if (Position.X > 0)
+            {
+                Bank = bank.left; // for texture animation
+                CurSpeed = new Vector2(-MaxSpeed.X, CurSpeed.Y); 
+            }
+            
         }
 
         internal void RightThrust()
         {
-            Bank = bank.right;
-            CurSpeed = new Vector2(MaxSpeed.X, CurSpeed.Y);
+            if (Position.X < WindowSize.X-30)
+            {
+                Bank = bank.right;
+                CurSpeed = new Vector2(MaxSpeed.X, CurSpeed.Y);
+            }
         }
 
         internal void ForwardThrust()

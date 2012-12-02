@@ -65,6 +65,7 @@ namespace SpaceShoot
         {
             curcooldown = maxcooldown;
             Vector2 bulletVelocity = new Vector2(ShipSpeed.X/2, ShipSpeed.Y/2); // not strictly physical but looks better
+            Console.WriteLine(ShipSpeed);
             bulletVelocity.X += (float)(spread * r.NextDouble() - spread/2);
             bulletVelocity.Y -= fireVelocity;
             Bullets.Enqueue(new BulletObject(BulletTextures[bulletType], WeaponPosition, bulletVelocity, friendly));
